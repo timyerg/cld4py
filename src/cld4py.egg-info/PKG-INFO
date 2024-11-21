@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cld4py
-Version: 1.0.0
+Version: 1.0.1
 Summary: Python 3 function to assign compact letter display letters
 Author-email: Timur Yergaliyev <timyerg@gmail.com>
 Project-URL: Homepage, https://github.com/timyerg/cld4py
@@ -42,4 +42,13 @@ Optional:
 
 ```python
 pip install cld4py
+```
+
+## Usage
+
+
+```python
+from cld4py.cld4py import *
+
+cld4py(*args)
 ```
