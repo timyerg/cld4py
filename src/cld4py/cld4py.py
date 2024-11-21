@@ -30,14 +30,14 @@ def cld4py(df, G1, G2, P, alpha=.05,
         return df.loc[(df[G1]==lv1)&(df[G2]==lv2)|(df[G1]==lv2)&(df[G2]==lv1),P].iloc[0] < alpha
           
     letters = string.ascii_lowercase
-    df[P] = df[P].apply(pd.to_numeric, errors='ignore')
+    df[P] = df[P].apply(pd.to_numeric)
     
     #define order
     if order == None:
         order = sorted(set(df[G1].tolist() + df[G2].tolist()))
     if order in ['ascending', 'descending']:
         asc = order=='ascending'
-        data[vals] = data[vals].apply(pd.to_numeric, errors='ignore')
+        data[vals] = data[vals].apply(pd.to_numeric)
         order = pd.DataFrame(data.groupby(group)[vals].mean()).sort_values(vals, ascending=asc).index.tolist()
 
     #assign letters

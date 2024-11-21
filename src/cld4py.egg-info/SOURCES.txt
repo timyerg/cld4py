@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/cld4py/__init__.py
+src/cld4py/cld4py.py
+src/cld4py.egg-info/PKG-INFO
+src/cld4py.egg-info/SOURCES.txt
+src/cld4py.egg-info/dependency_links.txt
+src/cld4py.egg-info/top_level.txt

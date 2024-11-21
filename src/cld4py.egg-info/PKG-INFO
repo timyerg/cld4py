@@ -1,3 +1,16 @@
+Metadata-Version: 2.1
+Name: cld4py
+Version: 1.0.0
+Summary: Python 3 function to assign compact letter display letters
+Author-email: Timur Yergaliyev <timyerg@gmail.com>
+Project-URL: Homepage, https://github.com/timyerg/cld4py
+Project-URL: Bug Tracker, https://github.com/timyerg/cld4py/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
 # Python 3 function to assign compact letter display letters
 
 Function to apply compact letter display for pairwise contrasts.
@@ -29,13 +42,4 @@ Optional:
 
 ```python
 pip install cld4py
-```
-
-## Usage
-
-
-```python
-from cld4py.cld4py import *
-
-cld4py(*args)
 ```
