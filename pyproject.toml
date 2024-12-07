@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cld4py"
-version = "1.0.1"
+version = "1.1.0"
 authors = [
   { name="Timur Yergaliyev", email="timyerg@gmail.com" },
 ]
-description = "Python 3 function to assign compact letter display letters"
+description = "Python 3 function to assign compact letter display letters and for plotting them with matplotlib/seaborn"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
