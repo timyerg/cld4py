@@ -94,7 +94,6 @@ def plot_letters(cld, data, vals, group, figax,
 
     types = ['boxplot', 'violinplot', 'barplot', 'swarmplot']
     labels = figax.get_xticklabels() if axis=="x" else figax.get_yticklabels()
-    step = (data[vals].max() - data[vals].min())/100 * pad
     
     #check parameters
     if axis not in "xy":
@@ -109,13 +108,20 @@ def plot_letters(cld, data, vals, group, figax,
         fs = labels[0].get_fontsize()
         
     #set limits
+    step = (data[vals].max()-data[vals].min())/100*(pad+1)
     if axis=="y":
         va = 'center'
         lims = figax.get_xlim()
-        figax.set_xlim(min(lims)-lim*step, max(lims)+lim*step)
+        if pos in ['upper', 'top']:
+            figax.set_xlim(min(lims), max(lims)+lim*step)
+        else:
+            figax.set_xlim(min(lims)-lim*step, max(lims))
     if axis=="x":
         lims = figax.get_ylim()
-        figax.set_ylim(min(lims)-lim*step, max(lims)+lim*step)
+        if pos in ['upper', 'top']:
+            figax.set_ylim(min(lims), max(lims)+lim*step)
+        else:
+            figax.set_xlim(min(lims)-lim*step, max(lims))
 
     #plot letters
     pos_dict = {
@@ -131,10 +137,8 @@ def plot_letters(cld, data, vals, group, figax,
     if not isinstance(cld, dict):
         cld = {i: cld.loc[i, 'Letters'] for i in cld.index}
         
-    
     for i, label in enumerate(labels):
         df = data.loc[data[group]==label.get_text()]
-        rel_step = (df[vals].max() - df[vals].min())/1.7
         x, y = label.get_position()
 
         #boxplot
@@ -144,8 +148,8 @@ def plot_letters(cld, data, vals, group, figax,
             
         #violinplot
         if plot == 'violinplot':
-            pos_dict.update({'upper': df[vals].max() + rel_step + step})
-            pos_dict.update({'lower': df[vals].min() - rel_step - step})
+            pos_dict.update({'upper': df[vals].max() + step*2})
+            pos_dict.update({'lower': df[vals].min() - step*2})
             
         #barplot
         if plot == 'barplot':
