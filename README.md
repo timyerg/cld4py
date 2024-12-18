@@ -46,6 +46,7 @@ assign_letters()
         data   - dataframe with values that were compared to get contrasts.
         vals   - column in data with compared values.
         group  - column in data with group information.
+        param  - wether sort by mean (True; default) or median (False).
     """
         
 plot_letters()

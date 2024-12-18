@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def assign_letters(df, G1, G2, P, alpha=.05,
-           order=None, data=None, vals=None, group=None):
+           order=None, data=None, vals=None, group=None, param=True):
     """
     Function to apply compact letter display for pairwise contrasts.
     Groups with no significant differences share a letter.
@@ -26,6 +26,7 @@ def assign_letters(df, G1, G2, P, alpha=.05,
         data   - dataframe with values that were compared to get contrasts.
         vals   - column in data with compared values.
         group  - column in data with group information.
+        param  - wether sort by mean (True; default) or median (False).
     """
     
     #helper function to check p
@@ -41,8 +42,10 @@ def assign_letters(df, G1, G2, P, alpha=.05,
     if order in ['ascending', 'descending']:
         asc = order=='ascending'
         data[vals] = data[vals].apply(pd.to_numeric)
-        order = pd.DataFrame(data.groupby(group)[vals].mean()).sort_values(vals, ascending=asc).index.tolist()
-
+        if param:
+            order = pd.DataFrame(data.groupby(group)[vals].mean()).sort_values(vals, ascending=asc).index.tolist()
+        else:
+            order = pd.DataFrame(data.groupby(group)[vals].median()).sort_values(vals, ascending=asc).index.tolist()
     #assign letters
     draft, sets = {}, []
     for i, l1 in enumerate(order):
@@ -108,16 +111,17 @@ def plot_letters(cld, data, vals, group, figax,
         fs = labels[0].get_fontsize()
         
     #set limits
-    step = (data[vals].max()-data[vals].min())/100*(pad+1)
     if axis=="y":
         va = 'center'
         lims = figax.get_xlim()
+        step = (max(lims)-min(lims))/100
         if pos in ['upper', 'top']:
             figax.set_xlim(min(lims), max(lims)+lim*step)
         else:
             figax.set_xlim(min(lims)-lim*step, max(lims))
     if axis=="x":
         lims = figax.get_ylim()
+        step = (max(lims)-min(lims))/100
         if pos in ['upper', 'top']:
             figax.set_ylim(min(lims), max(lims)+lim*step)
         else:
@@ -125,8 +129,8 @@ def plot_letters(cld, data, vals, group, figax,
 
     #plot letters
     pos_dict = {
-        'top': max(figax.get_ylim())-step if axis=='x' else max(figax.get_xlim())-step,
-        'bottom': min(figax.get_ylim())+step if axis=='x' else min(figax.get_xlim())+step}
+        'top': max(figax.get_ylim())-step if axis=='x' else max(figax.get_xlim())-step*pad,
+        'bottom': min(figax.get_ylim())+step if axis=='x' else min(figax.get_xlim())+step*pad}
     
     if axis=='x':
         ha = 'center'
@@ -143,25 +147,25 @@ def plot_letters(cld, data, vals, group, figax,
 
         #boxplot
         if plot == 'boxplot':
-            pos_dict.update({'upper': boxplot_stats(df[vals])[0]['whishi'] + step})
-            pos_dict.update({'lower': boxplot_stats(df[vals])[0]['whislo'] - step})
+            pos_dict.update({'upper': boxplot_stats(df[vals])[0]['whishi'] + step*pad})
+            pos_dict.update({'lower': boxplot_stats(df[vals])[0]['whislo'] - step*pad})
             
         #violinplot
         if plot == 'violinplot':
-            pos_dict.update({'upper': df[vals].max() + step*2})
-            pos_dict.update({'lower': df[vals].min() - step*2})
+            pos_dict.update({'upper': df[vals].max() + step*pad*2})
+            pos_dict.update({'lower': df[vals].min() - step*pad*2})
             
         #barplot
         if plot == 'barplot':
             line = figax.lines[i]
             gain = line.get_ydata() if axis=="x" else line.get_xdata()
-            pos_dict.update({'upper': step + abs(max(gain))})
-            pos_dict.update({'lower': -step + abs(min(gain))})
+            pos_dict.update({'upper': step*pad + abs(max(gain))})
+            pos_dict.update({'lower': -step*pad + abs(min(gain))})
         
         #swarmplot
         if plot == 'swarmplot':
-            pos_dict.update({'upper': df[vals].max() + step})
-            pos_dict.update({'lower': df[vals].min() - step})
+            pos_dict.update({'upper': df[vals].max() + step*pad})
+            pos_dict.update({'lower': df[vals].min() - step*pad})
             
         xpos = x if axis=="x" else pos_dict[pos]
         ypos = y if axis=="y" else pos_dict[pos]   
