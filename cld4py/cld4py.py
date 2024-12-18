@@ -125,7 +125,7 @@ def plot_letters(cld, data, vals, group, figax,
         if pos in ['upper', 'top']:
             figax.set_ylim(min(lims), max(lims)+lim*step)
         else:
-            figax.set_xlim(min(lims)-lim*step, max(lims))
+            figax.set_ylim(min(lims)-lim*step, max(lims))
 
     #plot letters
     pos_dict = {
